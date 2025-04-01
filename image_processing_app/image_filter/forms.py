@@ -11,18 +11,22 @@ FILTER_OPTIONS = [
     ('solar', 'Solarize')   # Invers colors above threshold
 ]
 
-class ImageUpload(forms.ModelForm):
+class ImageUploadForm(forms.ModelForm):
     '''
     Form for uploading image and selecting filters.
     Automatically created from the ProcessedImage model
     '''
 
     #Choice field allows users to select filters
-    filter_list = forms.ChoiceField(choices=FILTER_OPTIONS)
+    filters = forms.MultipleChoiceField(
+        choices=FILTER_OPTIONS,
+        widget=forms.CheckboxSelectMultiple,
+        required = True
+    )
 
     class Meta:
         # Specifies which model the form is based on
         model = ProcessedImage
 
         #Only include fields from the above model
-        fields = ['original_image', 'filter_type']
+        fields = ['original_image']

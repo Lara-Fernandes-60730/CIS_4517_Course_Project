@@ -33,10 +33,41 @@ def apply_filter(original_image_path, filter_type):
 
     #Save processed image
     base_path, ext = os.path.splittext(original_image_path)
-    processed_path = f"{base_path}_processed{ext}"
+    processed_path = f"{base_path}_{filter_type}{ext}"
     processed_img.save(processed_path)
 
     return processed_path
 
 def apply_sepia(img):
-    return " "
+    '''
+    Custom sepia filter implementation
+    img: PIL Image object
+    Returns processed PIL Image object
+    '''
+
+    width, height = img.size
+
+    # Create editable copy of image
+    pixels = img.load()
+
+    # Process each pixel
+    for py in range(height):
+        for px in range(width):
+            # Get original RGB values
+            r, g, b = img.getpixel((px, py))
+
+            # Calculate sepia value
+            tr = int(0.393 * r + 0.769 * g + 0.189 * b)
+            tg = int(0.349 * r + 0.686 * g + 0.168 * b)
+            tb = int(0.272 * r + 0.534 * g + 0.131 * b)
+
+            if tr > 255:
+                tr = 255
+            if tg > 255:
+                tg = 255
+            if tb > 255:
+                tb = 255
+
+            pixels[px,py] = (tr, tg, tb)
+
+    return img
