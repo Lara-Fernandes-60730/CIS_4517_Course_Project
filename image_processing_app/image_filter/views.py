@@ -47,6 +47,12 @@ def display_image(request, pk):
     Shows the processed image with filters now applied
     pk: Primary key of image to be displayed
     '''
-    image = ProcessedImage.objects.get(pk=pk)
+    try:
+        image = ProcessedImage.objects.get(pk=pk)
+        if not image.processed_image:
+            raise ValueError("No processed image available")
+        return render(request, 'display.html', {'image': image})
 
-    return render(request, 'display.html', {'image': image})
+
+    except(ProcessedImage.DoesNotExist, ValueError) as e:
+        return render(request, 'error.html', {'error': str(e)})

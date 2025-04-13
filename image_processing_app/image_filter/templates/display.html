@@ -1,10 +1,38 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Processed Image</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+<div class="container">
+    <h1>Processed Image</h1>
 
+    {% if image.processed_image and image.original_image %}
+    <div class="image-comparison">
+        <div class="image-container">
+            <h3>Original</h3>
+            <img src="{{ image.original_image.url }}" alt="Original Image">
+        </div>
+
+        <div class="image-container">
+            <h3>Processed</h3>
+            <img src="{{ image.processed_image.url }}" alt="Processed Image">
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="{{ image.processed_image.url }}" download class="btn">Download Processed Image</a>
+        <a href="/" class="btn">Process Another Image</a>
+    </div>
+    {% else %}
+    <div class="error">
+        <p>Image processing failed or image not available.</p>
+        <a href="/" class="btn">Try Again</a>
+    </div>
+    {% endif %}
+</div>
 </body>
 </html>

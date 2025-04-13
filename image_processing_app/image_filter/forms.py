@@ -8,7 +8,7 @@ FILTER_OPTIONS = [
     ('poster', 'Poster'),  # Reduces number of colors
     ('blur', 'Blur'),      # Applies blue effect
     ('edge', 'Edge Detection'), # Highlights edges
-    ('solar', 'Solarize')   # Invers colors above threshold
+    ('solar', 'Solarize')   # Inverse colors above threshold
 ]
 
 class ImageUploadForm(forms.ModelForm):
@@ -17,11 +17,12 @@ class ImageUploadForm(forms.ModelForm):
     Automatically created from the ProcessedImage model
     '''
 
-    #Choice field allows users to select filters
+    # Choice field allows users to select filters
     filters = forms.MultipleChoiceField(
-        choices=FILTER_OPTIONS,
+        choices=ProcessedImage.FILTER_CHOICES,  # Reference from model
         widget=forms.CheckboxSelectMultiple,
-        required = True
+        required=True,
+        label="Select Filters"
     )
 
     class Meta:
