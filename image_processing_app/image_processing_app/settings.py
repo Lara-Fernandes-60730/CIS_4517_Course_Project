@@ -16,8 +16,8 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-36)nd*77c0tt3_5(s$+n^cj-2n6kcxipf*3-9i6r597gtv*)1+'
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS = ['34.228.21.133']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,7 +62,11 @@ WSGI_APPLICATION = 'image_processing_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'cis4517projectdb',
+        'USER': 'lf',
+        'PASSWORD': 'Alu9e36wfp7',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -88,7 +92,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'image_filter/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
