@@ -3,34 +3,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Processed Image</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
 <div class="container">
     <h1>Processed Image</h1>
 
     {% if image.processed_image and image.original_image %}
-    <div class="image-comparison">
-        <div class="image-container">
+    <div class="image-grid">
+        <div class="image-wrapper">
             <h3>Original</h3>
-            <img src="{{ image.original_image.url }}" alt="Original Image">
+            <img src="{{ image.original_image.url }}" alt="Original">
         </div>
-
-        <div class="image-container">
+        <div class="image-wrapper">
             <h3>Processed</h3>
-            <img src="{{ image.processed_image.url }}" alt="Processed Image">
+            <img src="{{ image.processed_image.url }}" alt="Processed">
         </div>
     </div>
 
-    <div class="actions">
-        <a href="{{ image.processed_image.url }}" download class="btn">Download Processed Image</a>
-        <a href="/" class="btn">Process Another Image</a>
+    <div class="action-buttons">
+        <a href="{{ image.processed_image.url }}" download class="btn download-btn">
+            <i class="fas fa-download"></i> Download Processed Image
+        </a>
+        <a href="{% url 'upload_image' %}" class="btn">
+            <i class="fas fa-redo"></i> Process Another Image
+        </a>
     </div>
     {% else %}
-    <div class="error">
-        <p>Image processing failed or image not available.</p>
-        <a href="/" class="btn">Try Again</a>
+    <div class="error-message">
+        <p><i class="fas fa-exclamation-circle"></i> Image processing failed or image not available.</p>
+        <a href="{% url 'upload_image' %}" class="btn">Try Again</a>
     </div>
     {% endif %}
 </div>

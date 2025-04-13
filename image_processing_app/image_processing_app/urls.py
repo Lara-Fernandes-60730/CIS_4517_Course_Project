@@ -23,9 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     #Include URLS from processing app
-    path('', include('processor.urls'))
+    path('', include('image_filter.urls'))
 ]
 
 #Allows for serving media files while developing
 if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,12 +13,12 @@ class ProcessedImage(models.Model):
     ]
 
     original_image = models.ImageField(
-        upload_to='original/%Y/%m/%d/',
+        upload_to='original/',
         verbose_name="Original Image"
     )
 
     processed_image = models.ImageField(
-        upload_to='processed/%Y/%m/%d/',
+        upload_to='processed/',
         null=True,
         blank=True,
         verbose_name="Processed Image"

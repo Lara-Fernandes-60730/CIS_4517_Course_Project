@@ -1,31 +1,70 @@
+
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 <div class="container">
-    <h1>Upload Image</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>Image Filter App</h1>
+
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'upload_image' %}">
         {% csrf_token %}
 
-        <!-- Simplified form rendering -->
-        <div class="form-group">
-            <label>Select Image:</label>
-            {{ form.original_image }}
+        <div class="upload-area" id="upload-area">
+            <div class="upload-icon">📁</div>
+            <p class="upload-text">Drag and drop an image here or click to browse</p>
+            <p class="upload-text">Max file size: 10MB</p>
+
+            <div class="form-group">
+                {{ form.original_image }}
+            </div>
+
+            <button type="button" class="btn" id="chooseFileBtn">Choose File</button>
+            <span id="fileNameDisplay"></span>
         </div>
 
         <div class="form-group">
-            <label>Choose Filters:</label>
-            {{ form.filters }}
+            <h3>{{ form.filters.label }}</h3>
+            <div class="filter-options">
+                {% for value, text in form.filters.field.choices %}
+                <div class="filter-option">
+                    <input type="checkbox" id="id_filters_{{ forloop.counter0 }}" name="filters" value="{{ value }}">
+                    <label for="id_filters_{{ forloop.counter0 }}">{{ text }}</label>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <button type="submit">Process Image</button>
+        <div class="action-buttons">
+            <button type="submit" class="btn">Process Image</button>
+        </div>
     </form>
 </div>
-<script src="/static/js/main.js"></script>
+
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+    // Additional script to handle the Choose File button
+    document.addEventListener('DOMContentLoaded', function() {
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
+        const fileInput = document.querySelector('input[type="file"]');
+
+        if(chooseFileBtn && fileInput) {
+            chooseFileBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+        }
+    });
+</script>
 </body>
 </html>
