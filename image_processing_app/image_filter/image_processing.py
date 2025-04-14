@@ -3,6 +3,7 @@ import os
 import uuid
 from datetime import datetime
 from django.conf import settings
+import boto3
 
 
 def generate_output_path(original_path):
@@ -41,6 +42,11 @@ def apply_filter_chain(original_path, filter_types):
 
     output_path = generate_output_path(original_path)
     img.save(output_path)
+
+    s3 = boto3.client('s3', region_name=settings.AWS_REGION_NAME)
+    processed_s3_key = f"processed/{os.path.basename(output_path)}"
+    s3.upload_file(output_path, settings.AWS_STORAGE_BUCKET_NAME, processed_s3_key)
+
     return output_path
 
 

@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
 from pathlib import Path
 import os
 
@@ -21,6 +20,7 @@ ALLOWED_HOSTS = ['34.228.21.133', 'ec2-34-228-21-133.compute-1.amazonaws.com',
                  'localhost']
 
 INSTALLED_APPS = [
+    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,9 +81,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -91,9 +88,22 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+AWS_STORAGE_BUCKET_NAME = '4517-images'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'image_filter/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'image_filter/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 #MEDIA_URL = '/media/'
 
@@ -103,23 +113,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Add this for development static file serving
 '''
-if DEBUG:
+    if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'image_filter/static')]
-else:
+    else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 '''
 
 # S3 Configuration
-AWS_STORAGE_BUCKET_NAME = '4517-images'
-AWS_S3_REGION_NAME = 'us-east-1'
+AWS_REGION_NAME = 'us-east-1'
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None  # Let S3 decide based on bucket policies
+AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
 # Custom storage paths
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'
+
 # Media files organization
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+# Use IAM role instead of explicit credentials
+AWS_S3_USE_SSL = True
+AWS_S3_VERIFY = True

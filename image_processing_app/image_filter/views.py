@@ -4,6 +4,7 @@ from .models import ProcessedImage
 from .image_processing import apply_filter_chain
 from django.conf import settings
 import os
+import boto3
 
 
 def upload_image(request):
@@ -23,6 +24,10 @@ def upload_image(request):
                 # Save processed reference
                 image.processed_image.name = os.path.relpath(processed_path, settings.MEDIA_ROOT)
                 image.save()
+                s3 = boto3.client('s3', region_name=settings.AWS_REGION_NAME)
+                original_image_path = image.original_image.path
+                original_s3_key = f"original/{os.path.basename(original_image_path)}"
+                s3.upload_file(original_image_path, settings.AWS_STORAGE_BUCKET_NAME, original_s3_key)
 
                 return redirect('display_image', pk=image.pk)
 
