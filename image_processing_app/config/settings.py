@@ -17,7 +17,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-36)nd*77c0tt3_5(s$+n^cj-2n6kcxipf*3-9i6r597gtv*)1+'
 DEBUG = False
-ALLOWED_HOSTS = ['34.228.21.133']
+ALLOWED_HOSTS = ['34.228.21.133', 'ec2-34-228-21-133.compute-1.amazonaws.com',
+                 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -108,7 +109,6 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 '''
 
-# For S3 storage (optional)
 # S3 Configuration
 AWS_STORAGE_BUCKET_NAME = '4517-images'
 AWS_S3_REGION_NAME = 'us-east-1'
