@@ -16,8 +16,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-36)nd*77c0tt3_5(s$+n^cj-2n6kcxipf*3-9i6r597gtv*)1+'
 DEBUG = False
-ALLOWED_HOSTS = ['34.228.21.133', 'ec2-34-228-21-133.compute-1.amazonaws.com',
+ALLOWED_HOSTS = ['13.216.56.161', 'ec2-13-216-56-161.compute-1.amazonaws.com',
                  'localhost']
+
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD"
+                              )
+CSRF_TRUSTED_ORIGINS = [
+    'http://ec2-13-216-56-161.compute-1.amazonaws.com',
+    'http://13.216.56.161',
+    'https://ec2-13-216-56-161.compute-1.amazonaws.com',
+    'https://13.216.56.161',
+]
 
 INSTALLED_APPS = [
     'storages',
@@ -65,7 +74,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'cis4517projectdb',
         'USER': 'lf',
-        'PASSWORD': 'Alu9e36wfp7',
+        'PASSWORD': DATABASE_PASSWORD,
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -80,6 +89,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
